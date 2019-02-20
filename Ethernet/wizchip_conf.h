@@ -127,6 +127,7 @@ extern "C" {
    typedef   uint8_t   iodata_t;       ///< IO access unit. bus width
    typedef   int16_t   datasize_t;     ///< sent or received data size
    #include "./W6100/w6100.h"
+   #include "../Application/Application.h"
 #else
    #error "Unknown defined _WIZCHIP_. You should define 6100"
 #endif
