@@ -448,6 +448,7 @@ typedef enum
    SO_STATUS,           ///< Valid only in @ref getsockopt(). Get the SOCKETn status. @ref getSn_SR()
    SO_EXTSTATUS,        ///< Valid only in @ref getsockopt(). Get the extended TCP SOCKETn status. @ref getSn_ESR()
    SO_REMAINSIZE,       ///< Valid only in @ref getsockopt(). Get the remained packet size in non-TCP mode.
+   SO_MODE,
    SO_PACKINFO          ///< Valid only in @ref getsockopt(). Get the packet information as @ref PACK_FIRST, @ref PACK_REMAINED, and etc.
 }sockopt_type;
 

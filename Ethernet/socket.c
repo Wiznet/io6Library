@@ -481,6 +481,7 @@ datasize_t recvfrom(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, u
             break; 
          default:
             return SOCKERR_SOCKMODE;
+            break;
       }
       sock_remained_size[sn] = pack_len;
       sock_pack_info[sn] |= PACK_FIRST;
@@ -489,7 +490,7 @@ datasize_t recvfrom(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, u
          /* Read port number of PACKET INFO in SOCKETn RX buffer */
          if(port==0) return SOCKERR_ARG;
          wiz_recv_data(sn, head, 2);
-         *port = ( (((uint16_t)head[0]) << 8) + head[1] );
+         *port = ( ((((uint16_t)head[0])) << 8) + head[1] );
          setSn_CR(sn,Sn_CR_RECV);
          while(getSn_CR(sn));   
       }
@@ -661,6 +662,8 @@ int8_t getsockopt(uint8_t sn, sockopt_type sotype, void* arg)
          if(getSn_MR(sn) & 0x01)       return SOCKERR_SOCKMODE;
          else *(uint8_t*)arg = sock_pack_info[sn];
          break;
+      case SO_MODE:
+    	  *(uint8_t*) arg = 0x0F&getSn_MR(sn);
       default:
          return SOCKERR_SOCKOPT;
    }

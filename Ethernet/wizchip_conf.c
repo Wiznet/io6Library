@@ -461,7 +461,8 @@ int8_t ctlnetservice(ctlnetservice_type cnstype, void* arg)
       case CNS_GET_PREFIX:
          return wizchip_getprefix((wiz_Prefix*)arg);
       default:
-         return -1;
+          return -1;
+          break;
    }
 }
 
@@ -572,7 +573,9 @@ void wizphy_reset(void)
 {
 #if (_PHY_IO_MODE_ == _PHY_IO_MODE_PHYCR_)
    uint8_t tmp = getPHYCR1() | PHYCR1_RST;
+   PHYUNLOCK();
    setPHYCR1(tmp);
+   PHYLOCK();
 #elif (_PHY_IO_MODE_ == _PHY_IO_MODE_MII_)
 	wiz_mdio_write(PHYRAR_BMCR, wiz_mdio_read(PHYRAR_BMCR) | BMCR_RST);
 	while(wiz_mdio_read(PHYRAR_BMCR) & BMCR_RST);
