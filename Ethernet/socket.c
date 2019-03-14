@@ -98,6 +98,7 @@ static uint8_t  sock_pack_info[_WIZCHIP_SOCK_NUM_] = {0,};
 int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
 { 
    uint8_t taddr[16];
+   uint16_t local_port=0;
    CHECK_SOCKNUM(); 
    switch (protocol & 0x0F)
    {
@@ -136,15 +137,19 @@ int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
       switch(protocol)
       {
          case Sn_MR_MACRAW:
-            if((flag & (SF_DHA_MANUAL|SF_FORCE_ARP)) != 0) return SOCKERR_SOCKFLAG;
+            if((flag & (SF_DHA_MANUAL | SF_FORCE_ARP)) != 0)
+            	return SOCKERR_SOCKFLAG;
+            break;
          case Sn_MR_TCP4:
          case Sn_MR_TCP6:
          case Sn_MR_TCPD:     
-            if((flag & (SF_MULTI_ENABLE | SF_UNI_BLOCK)) !=0) return SOCKERR_SOCKFLAG;
+            if((flag & (SF_MULTI_ENABLE | SF_UNI_BLOCK)) !=0)
+            	return SOCKERR_SOCKFLAG;
             break;
          case Sn_MR_IPRAW4:
          case Sn_MR_IPRAW6:
-            if(flag !=0) return SOCKERR_SOCKFLAG;
+            if(flag !=0)
+            	return SOCKERR_SOCKFLAG;
          default:
             break;
       }
@@ -157,15 +162,20 @@ int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
       port = sock_any_port++;
       if(sock_any_port == 0xFFF0) sock_any_port = SOCK_ANY_PORT_NUM;
    }
+//   printf("port: %d\r\n", port);
    setSn_PORTR(sn,port);
    setSn_CR(sn,Sn_CR_OPEN);
+
    while(getSn_CR(sn));
+
    sock_io_mode &= ~(1 <<sn);
    sock_io_mode |= (((flag & SF_IO_NONBLOCK)>>3) << sn); 
    sock_is_sending &= ~(1<<sn);
    sock_remained_size[sn] = 0;
    sock_pack_info[sn] = PACK_NONE;
+
    while(getSn_SR(sn) == SOCK_CLOSED) ;
+//   printf("[%d]%d\r\n", sn, getSn_PORTR(sn));
    return sn;
 }  
 
@@ -211,7 +221,8 @@ int8_t connect(uint8_t sn, uint8_t * addr, uint16_t port, uint8_t addrlen)
    CHECK_SOCKINIT();
   
    CHECK_IPZERO(addr, addrlen);
-   if(port == 0) return SOCKERR_PORTZERO;
+   if(port == 0)
+	   return SOCKERR_PORTZERO;
 
    setSn_DPORTR(sn, port);
   
@@ -663,7 +674,7 @@ int8_t getsockopt(uint8_t sn, sockopt_type sotype, void* arg)
          else *(uint8_t*)arg = sock_pack_info[sn];
          break;
       case SO_MODE:
-    	  *(uint8_t*) arg = 0x0F&getSn_MR(sn);
+    	  *(uint8_t*) arg = 0x0F & getSn_MR(sn);
       default:
          return SOCKERR_SOCKOPT;
    }
