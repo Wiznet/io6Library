@@ -129,6 +129,7 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
 #ifdef _LOOPBACK_DEBUG_
         	 printf("%d:Listen, TCP server loopback, port [%d] as %s\r\n", sn, port, mode_msg);
 #endif
+          	 printf("%d:Listen, TCP server loopback, port [%d] as %s\r\n", sn, port, mode_msg);
              break;
           case SOCK_CLOSED:
     #ifdef _LOOPBACK_DEBUG_
