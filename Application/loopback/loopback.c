@@ -287,12 +287,11 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
            uint32_t recevied_size, remained_size;
            uint16_t size, sentsize;
 
-           getsockopt(sn, SO_MODE,&status);
+           //getsockopt(sn, SO_MODE,&status);
+           getsockopt(sn,SO_STATUS,&status);
            switch(status)
            {
-           case SOCK_UDP4:
-           case SOCK_UDP6:
-           case SOCK_UDPD:
+           case SOCK_UDP:
            	getsockopt(sn, SO_RECVBUF, &recevied_size);
         	if(recevied_size > DATA_BUF_SIZE) recevied_size = DATA_BUF_SIZE;
                  if(recevied_size>0)
