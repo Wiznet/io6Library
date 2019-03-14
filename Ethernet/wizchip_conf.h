@@ -114,20 +114,22 @@ extern "C" {
 
 #if (_WIZCHIP_ == W6100)
    #define _WIZCHIP_ID_                "W6100\0"
+
    /**
    * @brief Define @ref _WIZCHIP_ interface mode.
    * @todo You should select interface mode of @ref _WIZCHIP_.\n\n
    *       Select one of @ref _WIZCHIP_IO_MODE_SPI_VDM_, @ref _WIZCHIP_IO_MODE_SPI_FDM_, and @ref _WIZCHIP_IO_MODE_BUS_INDIR_
    * @sa WIZCHIP_READ(), WIZCHIP_WRITE(), WIZCHIP_READ_BUF(), WIZCHIP_WRITE_BUF()
    */
-   #define _WIZCHIP_IO_MODE_           _WIZCHIP_IO_MODE_BUS_INDIR_
-   //#define _WIZCHIP_IO_MODE_         _WIZCHIP_IO_MODE_SPI_VDM_
+   //#define _WIZCHIP_IO_MODE_           _WIZCHIP_IO_MODE_BUS_INDIR_
+   #define _WIZCHIP_IO_MODE_         _WIZCHIP_IO_MODE_SPI_VDM_
    //#define _WIZCHIP_IO_MODE_         _WIZCHIP_IO_MODE_SPV_FDM_
 
    typedef   uint8_t   iodata_t;       ///< IO access unit. bus width
    typedef   int16_t   datasize_t;     ///< sent or received data size
    #include "./W6100/w6100.h"
    #include "../Application/Application.h"
+   #include "W6100RelFunctions.h"
 #else
    #error "Unknown defined _WIZCHIP_. You should define 6100"
 #endif
@@ -146,7 +148,11 @@ extern "C" {
 #if _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_
    #define _WIZCHIP_IO_BASE_            0x60000000   // for W6100 BUS
 #elif _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_
+#ifdef    SPI_DMA
+	#define _WIZCHIP_IO_BASE_            0x60000000   // for W6100  SPI DMA
+#else
    #define _WIZCHIP_IO_BASE_            0x00000000   // for W6100 SPI
+#endif
 #else
    #error "You should define _WIZCHIP_IO_BASE_ to fit your system memory map."
 #endif
