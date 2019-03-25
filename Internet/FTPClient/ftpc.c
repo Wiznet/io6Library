@@ -70,14 +70,13 @@ void ftpc_menu(uint8_t *dbuf)
 			}
 			else{
 				wiz_NetInfo gWIZNETINFO;
-
-					ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
-					if(ftpc.ip_version==IPv6_MODE)
-					{
-					sprintf(dat,"EPRT |2|%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x|%d|\r\n", gWIZNETINFO.lla[0], gWIZNETINFO.lla[1], gWIZNETINFO.lla[2], gWIZNETINFO.lla[3],
+				ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
+				if(ftpc.ip_version==IPv6_MODE)
+				{
+				sprintf(dat,"EPRT |2|%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x|%d|\r\n", gWIZNETINFO.lla[0], gWIZNETINFO.lla[1], gWIZNETINFO.lla[2], gWIZNETINFO.lla[3],
 gWIZNETINFO.lla[4], gWIZNETINFO.lla[5], gWIZNETINFO.lla[6], gWIZNETINFO.lla[7], gWIZNETINFO.lla[8], gWIZNETINFO.lla[9], gWIZNETINFO.lla[10], gWIZNETINFO.lla[11],
 gWIZNETINFO.lla[12], gWIZNETINFO.lla[13], gWIZNETINFO.lla[14], gWIZNETINFO.lla[15], local_port);
-				}
+			}
 
 				else{
 					sprintf(dat,"PORT %d,%d,%d,%d,%d,%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3], (uint8_t)(local_port>>8), (uint8_t)(local_port&0x00ff));
@@ -94,15 +93,32 @@ gWIZNETINFO.lla[12], gWIZNETINFO.lla[13], gWIZNETINFO.lla[14], gWIZNETINFO.lla[1
 		}
 		else if(msg_c=='5'){
 			if(ftpc.dsock_mode==PASSIVE_MODE){
-				sprintf(dat,"PASV\r\n");
+				if(ftpc.ip_version==IPv6_MODE)
+				{
+					sprintf(dat,"EPSV ALL\r\n");
+				}
+				else
+				{
+					sprintf(dat,"PASV\r\n");
+				}
 				send(CTRL_SOCK, (uint8_t *)dat, strlen(dat));
 				Command.First = f_put;
 				break;
+
 			}
 			else{
 				wiz_NetInfo gWIZNETINFO;
 				ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
-				sprintf(dat,"PORT %d,%d,%d,%d,%d,%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3], (uint8_t)(local_port>>8), (uint8_t)(local_port&0x00ff));
+				if(ftpc.ip_version==IPv6_MODE)
+				{
+				sprintf(dat,"EPRT |2|%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x|%d|\r\n", gWIZNETINFO.lla[0], gWIZNETINFO.lla[1], gWIZNETINFO.lla[2], gWIZNETINFO.lla[3],
+gWIZNETINFO.lla[4], gWIZNETINFO.lla[5], gWIZNETINFO.lla[6], gWIZNETINFO.lla[7], gWIZNETINFO.lla[8], gWIZNETINFO.lla[9], gWIZNETINFO.lla[10], gWIZNETINFO.lla[11],
+gWIZNETINFO.lla[12], gWIZNETINFO.lla[13], gWIZNETINFO.lla[14], gWIZNETINFO.lla[15], local_port);
+			}
+
+				else{
+					sprintf(dat,"PORT %d,%d,%d,%d,%d,%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3], (uint8_t)(local_port>>8), (uint8_t)(local_port&0x00ff));
+				}
 				send(CTRL_SOCK, (uint8_t *)dat, strlen(dat));
 				Command.First = f_put;
 
@@ -112,16 +128,32 @@ gWIZNETINFO.lla[12], gWIZNETINFO.lla[13], gWIZNETINFO.lla[14], gWIZNETINFO.lla[1
 		}
 		else if(msg_c=='6'){
 			if(ftpc.dsock_mode==PASSIVE_MODE){
-				sprintf(dat,"PASV\r\n");
+				if(ftpc.ip_version==IPv6_MODE)
+				{
+					sprintf(dat,"EPSV ALL\r\n");
+				}
+				else
+				{
+					sprintf(dat,"PASV\r\n");
+				}
 				send(CTRL_SOCK, (uint8_t *)dat, strlen(dat));
 				Command.First = f_get;
 				break;
+
 			}
 			else{
 				wiz_NetInfo gWIZNETINFO;
 				ctlnetwork(CN_GET_NETINFO, (void*) &gWIZNETINFO);
+				if(ftpc.ip_version==IPv6_MODE)
+				{
+				sprintf(dat,"EPRT |2|%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x:%.2x%.2x|%d|\r\n", gWIZNETINFO.lla[0], gWIZNETINFO.lla[1], gWIZNETINFO.lla[2], gWIZNETINFO.lla[3],
+gWIZNETINFO.lla[4], gWIZNETINFO.lla[5], gWIZNETINFO.lla[6], gWIZNETINFO.lla[7], gWIZNETINFO.lla[8], gWIZNETINFO.lla[9], gWIZNETINFO.lla[10], gWIZNETINFO.lla[11],
+gWIZNETINFO.lla[12], gWIZNETINFO.lla[13], gWIZNETINFO.lla[14], gWIZNETINFO.lla[15], local_port);
+			}
 
-				sprintf(dat,"PORT %d,%d,%d,%d,%d,%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3], (uint8_t)(local_port>>8), (uint8_t)(local_port&0x00ff));
+				else{
+					sprintf(dat,"PORT %d,%d,%d,%d,%d,%d\r\n", gWIZNETINFO.ip[0], gWIZNETINFO.ip[1], gWIZNETINFO.ip[2], gWIZNETINFO.ip[3], (uint8_t)(local_port>>8), (uint8_t)(local_port&0x00ff));
+				}
 				send(CTRL_SOCK, (uint8_t *)dat, strlen(dat));
 				Command.First = f_get;
 
