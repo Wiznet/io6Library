@@ -312,6 +312,18 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
            datasize_t ret;
            datasize_t received_size;
            uint16_t size, sentsize;
+		   uint8_t* mode_msg;
+
+		   if(loopback_mode == AS_IPV4)
+		   {
+		    mode_msg = msg_v4;
+		   }else if(loopback_mode == AS_IPV6)
+		   {
+			mode_msg = msg_v6;
+		   }else
+		   {
+			mode_msg = msg_dual;
+		   }
 
            getsockopt(sn, SO_STATUS,&status);
            switch(status)
@@ -350,7 +362,7 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
                    socket(sn,Sn_MR_UDPD, port, 0x00);
                    break;
                 }
-           	   printf("%d:Opened, UDP loopback, port [%d]\r\n", sn, port);
+           	   printf("%d:Opened, UDP loopback, port [%d] as %s\r\n", sn, port, mode_msg);
 
            }
 
