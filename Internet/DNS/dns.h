@@ -77,8 +77,6 @@ extern "C" {
 
 #define DNS_MSG_ID         0x1122   ///< ID for DNS message. You can be modifyed it any number
 
-#define AS_IPV4 4
-#define AS_IPV6 6
 /*
  * @brief DNS process initialize
  * @param s   : Socket number for DNS
