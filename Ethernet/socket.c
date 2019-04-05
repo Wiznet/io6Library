@@ -98,7 +98,7 @@ static uint8_t  sock_pack_info[_WIZCHIP_SOCK_NUM_] = {0,};
 int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
 { 
    uint8_t taddr[16];
-   uint16_t local_port=0;
+
    CHECK_SOCKNUM(); 
    switch (protocol & 0x0F)
    {
@@ -674,7 +674,8 @@ int8_t getsockopt(uint8_t sn, sockopt_type sotype, void* arg)
          else *(uint8_t*)arg = sock_pack_info[sn];
          break;
       case SO_MODE:
-    	  *(uint8_t*) arg = 0x0F & getSn_MR(sn);
+    	  *(uint8_t*)arg = (0x0F & getSn_MR(sn));
+    	  break;
       default:
          return SOCKERR_SOCKOPT;
    }
