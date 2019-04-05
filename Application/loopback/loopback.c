@@ -10,9 +10,9 @@
 static uint16_t any_port = 	50000;
 static uint8_t curr_state[8] = {0,};
 static uint8_t sock_state[8] = {0,};
-char* msg_v4 = "IPv4 mode";
-char* msg_v6 = "IPv6 mode";
-char* msg_dual = "Dual IP mode";
+uint8_t* msg_v4 = "IPv4 mode";
+uint8_t* msg_v6 = "IPv6 mode";
+uint8_t* msg_dual = "Dual IP mode";
 
 int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_mode)
     {
@@ -22,7 +22,7 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
        uint8_t tmp = 0;
        datasize_t received_size;
 	   uint8_t arg_tmp8;
-	   char* mode_msg;
+	   uint8_t* mode_msg;
 
 	   if(loopback_mode == AS_IPV4)
 	   {
@@ -311,7 +311,7 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
            datasize_t ret;
            datasize_t received_size;
            uint16_t sentsize;
-		   char* mode_msg;
+           uint8_t* mode_msg;
 
 		   if(loopback_mode == AS_IPV4)
 		   {
