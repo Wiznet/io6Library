@@ -15,4 +15,9 @@
 #define AS_IPV4 2
 #define AS_IPV6 23
 #define AS_IPDUAL 11
+
+#define msg_v4		"IPv4 mode";
+#define msg_v6		"IPv6 mode";
+#define msg_dual	"Dual IP mode";
+
 #endif

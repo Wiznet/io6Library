@@ -8,11 +8,10 @@
 
 //static uint16_t j=0;
 static uint16_t any_port = 	50000;
-static uint8_t curr_state[8] = {0,};
+//static uint8_t curr_state[8] = {0,};
 static uint8_t sock_state[8] = {0,};
-uint8_t* msg_v4 = "IPv4 mode";
-uint8_t* msg_v6 = "IPv6 mode";
-uint8_t* msg_dual = "Dual IP mode";
+
+
 
 int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_mode)
     {

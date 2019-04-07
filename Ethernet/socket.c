@@ -371,6 +371,7 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
    uint8_t tmp = 0;
    uint8_t tcmd = 0;
    uint16_t freesize = 0;
+   uint16_t i, tmp_port;
    /* 
     * The below codes can be omitted for optmization of speed
     */
@@ -378,6 +379,7 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
    //CHECK_DGRAMMODE();
    /************/
    tmp = getSn_MR(sn);
+
    if(tmp != Sn_MR_MACRAW)
    {
        if (addrlen == 16)      // addrlen=16, Sn_MR_UDP6(1010), Sn_MR_UDPD(1110)), IPRAW6(1011)
@@ -399,7 +401,10 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
    }
    if(tmp & 0x02)     // Sn_MR_UPD4(0010), Sn_MR_UDP6(1010), Sn_MR_UDPD(1110)
    {
-      if(port){ setSn_DPORTR(sn, port);}
+      if(port)
+      {
+   		  setSn_DPORTR(sn, port);
+      }
       else   return SOCKERR_PORTZERO;
    }
   
@@ -416,7 +421,9 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
    wiz_send_data(sn, buf, len);
    setSn_CR(sn,tcmd);
    while(getSn_CR(sn));
-  
+
+   printf("port num: %d\r\n", getSn_DPORTR(sn));
+
    while(1)
    {
       tmp = getSn_IR(sn);
