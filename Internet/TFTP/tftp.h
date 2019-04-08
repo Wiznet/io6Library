@@ -85,7 +85,7 @@ typedef struct tftp_error {
 } TFTP_ERROR_T;
 
 typedef struct tftp_option {
-	uint8_t *code;
+	uint8_t *name;
 	uint8_t *value;
 } TFTP_OPTION;
 

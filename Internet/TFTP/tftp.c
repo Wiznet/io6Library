@@ -31,7 +31,7 @@ static uint32_t g_tftp_state = STATE_NONE;
 
 
 static TFTP_OPTION default_tftp_opt = {
-	.code = (uint8_t *)"tsize",
+	.name = (uint8_t *)"tsize",
 	.value = (uint8_t *)"0"
 };
 
@@ -85,16 +85,11 @@ void tftpc(uint8_t sn, uint8_t *server_ip, uint8_t *filename, uint8_t ip_mode)
 			buf_size += strlen((char *)filename) + 1;
 			strcpy((char *)(buf+buf_size), (const char *)TRANS_BINARY);
 			buf_size += strlen((char *)TRANS_BINARY) + 1;
-			strcpy((char *)(buf+buf_size), (const char *)default_tftp_opt.code);
-			buf_size += strlen((char *)default_tftp_opt.code) + 1;
+			strcpy((char *)(buf+buf_size), (const char *)default_tftp_opt.name);
+			buf_size += strlen((char *)default_tftp_opt.name) + 1;
 			strcpy((char *)(buf+buf_size), (const char *)default_tftp_opt.value);
 			buf_size += strlen((char *)default_tftp_opt.value) + 1;
 			printf("curr state: STATE_NONE\r\n");
-			for(i=0; i<buf_size; i++)
-				printf("%02X ", buf[i]);
-			printf("\r\n");
-			printf("server ip: %d.%d.%d.%d, server port: %d, data size: %d\r\n",
-					server_ip[0], server_ip[1], server_ip[2], server_ip[3], TFTP_SERVER_PORT, buf_size);
 			if(ip_mode == AS_IPV4)
 				ret = sendto(sn, buf, buf_size, server_ip, TFTP_SERVER_PORT, 4);
 			else if(ip_mode == AS_IPV6)
@@ -114,8 +109,6 @@ void tftpc(uint8_t sn, uint8_t *server_ip, uint8_t *filename, uint8_t ip_mode)
 				memset(buf, 0, MAX_MTU_SIZE);
 				ret = recvfrom(sn, buf, received_size, (uint8_t*)destip, (uint16_t*)&destport, &addr_len);
 
-				printf("rcvd bytes: %d\r\n", ret);
-				printf("destip: %d.%d.%d.%d, destport: %d\r\n", destip[0], destip[1], destip[2], destip[3], destport);
 				if(ret < 0)
 					return;
 
@@ -160,9 +153,20 @@ void tftpc(uint8_t sn, uint8_t *server_ip, uint8_t *filename, uint8_t ip_mode)
 				}else if(current_opcode == TFTP_OACK)
 				{
 
-					TFTP_OPTION *data = (TFTP_OPTION *)buf;
-//					printf("option name: %s, option value: %s\r\n", data->code, data->value);
-//
+					current_block_num = 0;
+					uint8_t* option_startaddr = (uint8_t*)(buf + 2);
+					while(option_startaddr < buf + ret )
+					{
+						printf("optoin_startaddr : %0x, buf + ret : %x\r\n", option_startaddr, (buf + ret));
+						TFTP_OPTION option;
+						option.name = option_startaddr;
+						option_startaddr += (strlen(option.name) + 1);
+						option.value = option_startaddr;
+						option_startaddr += (strlen(option.value) + 1);
+						printf("option.name: %s, option.value: %s\r\n", option.name, option.value);
+//						break;
+					}
+
 					memset(buf, 0, MAX_MTU_SIZE);
 					buf_size=0;
 					*(uint16_t *)(buf + buf_size) = htons(TFTP_ACK);
