@@ -540,4 +540,23 @@ int8_t setsockopt(uint8_t sn, sockopt_type sotype, void* arg);
  */
 int8_t getsockopt(uint8_t sn, sockopt_type sotype, void* arg);
 
+/**
+ * @ingroup WIZnet_socket_APIs
+ *  @brief Peeks a sub-message in SOCKETn RX buffer
+ *  @details It peeks the incoming message of SOCKETn RX buffer. \n
+ *           It can find the specified sub-message in the incoming message and
+ *           return the length of incoming message before the sub-message. \n
+ *           It is useful when you need to read each messages from multiple message in SOCKET RX buffer.
+ *  @param sn SOCKET number
+ *  @param submsg sub-message pointer to find
+ *  @param subsize the length of <i>submsg</i>
+ * @return
+ *   - Success : the length of incoming message length before the <i>submsg</i> \n
+ *   - Fail : -1
+ * @note
+ *   It is just return the length of incoming message before the found sub-message. It does not receive the message.\n
+ *   So, after calling peeksockmsg, @ref _Sn_RX_RD_ is not changed.
+ */
+int16_t peeksockmsg(uint8_t sn, uint8_t* submsg, uint16_t subsize);
+
 #endif   // _SOCKET_H_

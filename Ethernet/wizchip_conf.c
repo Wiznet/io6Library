@@ -225,6 +225,7 @@ _WIZCHIP_T_  WIZCHIP =
    },
 #if (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_)   
    {
+      .BUS =
       {
          wizchip_bus_read,
          wizchip_bus_write,
@@ -234,6 +235,7 @@ _WIZCHIP_T_  WIZCHIP =
    }
 #elif (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_)
    {
+      .SPI =
       {
          wizchip_spi_read,
          wizchip_spi_write,

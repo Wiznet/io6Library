@@ -150,6 +150,7 @@ int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
          case Sn_MR_IPRAW6:
             if(flag !=0)
             	return SOCKERR_SOCKFLAG;
+            break;
          default:
             break;
       }
@@ -674,9 +675,33 @@ int8_t getsockopt(uint8_t sn, sockopt_type sotype, void* arg)
          else *(uint8_t*)arg = sock_pack_info[sn];
          break;
       case SO_MODE:
-    	  *(uint8_t*) arg = 0x0F & getSn_MR(sn);
+         *(uint8_t*) arg = 0x0F & getSn_MR(sn);
+         break;
       default:
          return SOCKERR_SOCKOPT;
    }
    return SOCK_OK;
+}
+
+int16_t peeksockmsg(uint8_t sn, uint8_t* submsg, uint16_t subsize)
+{
+   uint32_t rx_ptr = 0;
+   uint16_t i = 0, sub_idx = 0;
+
+   if( (getSn_RX_RSR(sn) > 0) && (subsize > 0) )
+   {
+       rx_ptr = ((uint32_t)getSn_RX_RD(sn) << 8)  + WIZCHIP_RXBUF_BLOCK(sn);
+       sub_idx = 0;
+       for(i = 0; i < getSn_RX_RSR(sn) ; i++)
+       {
+          if(WIZCHIP_READ(rx_ptr) == submsg[sub_idx])
+          {
+              sub_idx++;
+              if(sub_idx == subsize) return (i + 1 - sub_idx);
+          }
+          else sub_idx = 0;
+          rx_ptr = WIZCHIP_OFFSET_INC(rx_ptr,1);
+       }
+   }
+   return -1;
 }
