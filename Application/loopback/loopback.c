@@ -169,6 +169,7 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
 
 int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destport, uint8_t loopback_mode)
     {
+
        int32_t ret; // return value for SOCK_ERRORs
        datasize_t sentsize=0;
        uint8_t status,inter,addr_len;
@@ -258,7 +259,21 @@ int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destpo
 
           case SOCK_INIT :
     #ifdef _LOOPBACK_DEBUG_
-        	 printf("%d:Try to connect to the %d.%d.%d.%d : %d\r\n", sn, destip[0], destip[1], destip[2], destip[3], destport);
+        	  if(loopback_mode == AS_IPV4)
+        		  printf("%d:Try to connect to the %d.%d.%d.%d, %d\r\n", sn, destip[0], destip[1], destip[2], destip[3], destport);
+        	  else if(loopback_mode == AS_IPV6)
+        	  {
+        		  printf("%d:Try to connect to the %04X:%04X", sn, ((uint16_t)destip[0] << 8) | ((uint16_t)destip[1]),
+                  		((uint16_t)destip[2] << 8) | ((uint16_t)destip[3]));
+                  printf(":%04X:%04X", ((uint16_t)destip[4] << 8) | ((uint16_t)destip[5]),
+                  		((uint16_t)destip[6] << 8) | ((uint16_t)destip[7]));
+                  printf(":%04X:%04X", ((uint16_t)destip[8] << 8) | ((uint16_t)destip[9]),
+                  		((uint16_t)destip[10] << 8) | ((uint16_t)destip[11]));
+                  printf(":%04X:%04X, ", ((uint16_t)destip[12] << 8) | ((uint16_t)destip[13]),
+                  		((uint16_t)destip[14] << 8) | ((uint16_t)destip[15]));
+                  printf("%d\r\n", destport);
+
+        	  }
     #endif					
         	 getsockopt(sn,SO_DESTIP,&destinfo);
 					addr_len = destinfo.len;
@@ -292,6 +307,8 @@ int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destpo
     #endif
                  return SOCKERR_SOCKNUM;
              }
+    		 printf("%d:Socket opened[%d]\r\n",sn, getSn_SR(sn));
+    		 sock_state[sn] = 1;
 
     #ifdef _LOOPBACK_DEBUG_
         	 //printf("%d:TCP client loopback start\r\n",sn);
