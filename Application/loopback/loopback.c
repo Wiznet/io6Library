@@ -137,13 +137,13 @@ int32_t loopback_tcps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
     #endif
         	 switch(loopback_mode){
         	   case AS_IPV4:
-        		    tmp = socket(sn, Sn_MR_TCP4, port, 0x00);
+        		    tmp = socket(sn, Sn_MR_TCP4, port, SOCK_IO_NONBLOCK);
         		    break;
         	   case AS_IPV6:
-        		   tmp = socket(sn, Sn_MR_TCP6, port, 0x00);
+        		   tmp = socket(sn, Sn_MR_TCP6, port, SOCK_IO_NONBLOCK);
         		   break;
         	   case AS_IPDUAL:
-        		   tmp = socket(sn, Sn_MR_TCPD, port, 0x00);
+        		   tmp = socket(sn, Sn_MR_TCPD, port, SOCK_IO_NONBLOCK);
         		   break;
         	   default:
         		   break;
@@ -269,33 +269,33 @@ int32_t loopback_tcpc(uint8_t sn, uint8_t* buf, uint8_t* destip, uint16_t destpo
                   		((uint16_t)destip[6] << 8) | ((uint16_t)destip[7]));
                   printf(":%04X:%04X", ((uint16_t)destip[8] << 8) | ((uint16_t)destip[9]),
                   		((uint16_t)destip[10] << 8) | ((uint16_t)destip[11]));
-                  printf(":%04X:%04X, ", ((uint16_t)destip[12] << 8) | ((uint16_t)destip[13]),
+                  printf(":%04X:%04X,", ((uint16_t)destip[12] << 8) | ((uint16_t)destip[13]),
                   		((uint16_t)destip[14] << 8) | ((uint16_t)destip[15]));
                   printf("%d\r\n", destport);
 
         	  }
     #endif					
-        	 getsockopt(sn,SO_DESTIP,&destinfo);
-					addr_len = destinfo.len;
-              if(addr_len == 16){
-                  ret = connect(sn, destip, destport, 16); /* Try to connect to TCP server(Socket, DestIP, DestPort) */
-              }
-              else{
-                 ret = connect(sn, destip, destport, 4);
-              }
-        	  if( ret != SOCK_OK) return ret;	//	Try to TCP connect to the TCP server (destination)
+
+        	  if(loopback_mode == AS_IPV4)
+        		  ret = connect(sn, destip, destport, 4); /* Try to connect to TCP server(Socket, DestIP, DestPort) */
+        	  else if(loopback_mode == AS_IPV6)
+        		  ret = connect(sn, destip, destport, 16); /* Try to connect to TCP server(Socket, DestIP, DestPort) */
+
+        	  printf("SOCK Status: %d\r\n", ret);
+
+              if( ret != SOCK_OK) return ret;	//	Try to TCP connect to the TCP server (destination)
           break;
 
           case SOCK_CLOSED:
         	 switch(loopback_mode){
         	   case AS_IPV4:
-        		    tmp = socket(sn, Sn_MR_TCP4, any_port++, 0x00);
+        		    tmp = socket(sn, Sn_MR_TCP4, any_port++, SOCK_IO_NONBLOCK);
         		    break;
         	   case AS_IPV6:
-        		   tmp = socket(sn, Sn_MR_TCP6, any_port++, 0x00);
+        		   tmp = socket(sn, Sn_MR_TCP6, any_port++, SOCK_IO_NONBLOCK);
         		   break;
         	   case AS_IPDUAL:
-        		   tmp = socket(sn, Sn_MR_TCPD, any_port++, 0x00);
+        		   tmp = socket(sn, Sn_MR_TCPD, any_port++, SOCK_IO_NONBLOCK);
         		   break;
         	   default:
         		   break;
@@ -370,13 +370,13 @@ int32_t loopback_udps(uint8_t sn, uint8_t* buf, uint16_t port, uint8_t loopback_
            	switch(loopback_mode)
                {
                case AS_IPV4:
-                   socket(sn,Sn_MR_UDP4, port, 0x00);
+                   socket(sn,Sn_MR_UDP4, port, SOCK_IO_NONBLOCK);
                    break;
                case AS_IPV6:
-                   socket(sn,Sn_MR_UDP6, port,0x00);
+                   socket(sn,Sn_MR_UDP6, port, SOCK_IO_NONBLOCK);
                    break;
                case AS_IPDUAL:
-                   socket(sn,Sn_MR_UDPD, port, 0x00);
+                   socket(sn,Sn_MR_UDPD, port, SOCK_IO_NONBLOCK);
                    break;
                 }
            	   printf("%d:Opened, UDP loopback, port [%d] as %s\r\n", sn, port, mode_msg);

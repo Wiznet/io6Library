@@ -163,14 +163,13 @@ int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag)
       port = sock_any_port++;
       if(sock_any_port == 0xFFF0) sock_any_port = SOCK_ANY_PORT_NUM;
    }
-//   printf("port: %d\r\n", port);
    setSn_PORTR(sn,port);
    setSn_CR(sn,Sn_CR_OPEN);
 
    while(getSn_CR(sn));
 
    sock_io_mode &= ~(1 <<sn);
-   sock_io_mode |= (((flag & SF_IO_NONBLOCK)>>3) << sn); 
+   sock_io_mode |= ((flag & (SF_IO_NONBLOCK>>3)) << sn);
    sock_is_sending &= ~(1<<sn);
    sock_remained_size[sn] = 0;
    sock_pack_info[sn] = PACK_NONE;
