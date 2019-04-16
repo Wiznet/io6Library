@@ -148,11 +148,7 @@ extern "C" {
 #if _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_
    #define _WIZCHIP_IO_BASE_            0x60000000   // for W6100 BUS
 #elif _WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_
-#ifdef    SPI_DMA
-	#define _WIZCHIP_IO_BASE_            0x60000000   // for W6100  SPI DMA
-#else
    #define _WIZCHIP_IO_BASE_            0x00000000   // for W6100 SPI
-#endif
 #else
    #error "You should define _WIZCHIP_IO_BASE_ to fit your system memory map."
 #endif
