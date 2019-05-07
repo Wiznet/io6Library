@@ -233,17 +233,18 @@ You can refer many examples like as http, ftp, and so on related to io6Library &
 
 ## Available WIZCHIP sets
 
-|Product Name| Figures|
-|-:-|-:-|
-|W6100-L(Q)| <img src=https://raw.githubusercontent.com/Wiznet/io6Library/master/Doxygen/img/w6100.png width=320>|
+<table>
+ <tr> <th>Product Name</th><th>Figures</th> </tr>
+ <tr> <td>W6100-L(Q)</td> <td> <img src=https://raw.githubusercontent.com/Wiznet/io6Library/master/Doxygen/img/w6100.png width=320></td></tr>
+ </table>
 
 ## Reference Site
 
-WIZnet Homepage : https://www.wiznet.io/
-WIZCHIP Set : https://www.wiznet.io/product/tcpip-chip/
-WIZCHIP Modules : https://www.wiznet.io/product/network-module/
-Technical Documents : [WiKi](http://wizwiki.net/), [WIZCHIP](http://wizwiki.net/https://wizwiki.net/wiki/doku.php?id=products:iethernet:start)
-Q&A, Forum : https://forum.wiznet.io/
+  - WIZnet Homepage : https://www.wiznet.io/
+  - WIZCHIP Set : https://www.wiznet.io/product/tcpip-chip/
+  - WIZCHIP Modules : https://www.wiznet.io/product/network-module/
+  - Technical Documents : [WiKi](http://wizwiki.net/), [WIZCHIP](http://wizwiki.net/https://wizwiki.net/wiki/doku.php?id=products:iethernet:start)
+  - Q&A, Forum : https://forum.wiznet.io/
 
-Simple IPv6 intrduction : https://maker.wiznet.io/wp-content/uploads/2019/04/WoW_part1.pdf
-Simple W6100 Description : https://maker.wiznet.io/wp-content/uploads/2019/04/WoW_part2.pdf
+  - Simple IPv6 intrduction : https://maker.wiznet.io/wp-content/uploads/2019/04/WoW_part1.pdf
+  - Simple W6100 Description : https://maker.wiznet.io/wp-content/uploads/2019/04/WoW_part2.pdf
