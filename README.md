@@ -26,7 +26,7 @@ io6Library can be classified into three types as follows.
    - Socket Registers
      : Define SOCKET regsiters such as socket mode, socket communication, socket interrupt, and so on.
 
- - WIZCHIP 별 I/O Access function
+ - Each WIZCHIP I/O Access function
    - Basic I/O function 
      : Basic unit function to access Input/Output through HOST interface (SPI, BUS, etc.) defined by WIZCHIP
    - Common Register Access Functions
@@ -107,7 +107,7 @@ For more information, see <b>How to Use</b>.
   #define _WIZCHIP_IO_MODE_       _WIZCHIP_IO_MODE_SPI_VDM_
   ```
 
-  아래와 같이 SPI interface를 통해 WIZCHIP select/deselect, 1byte read/write, critical section enter/exit 와 같은 기본 단위 함수를 작성한다.
+  Create basic unit functions such as WIZCHIP select / deselect, 1byte read / write, critical section enter / exit etc. via SPI interface as follows.
   
   Make your basic I/O access functions such as WIZCHIP select/deselect, 1byte read/write and critical section enter/exit through the SPI interface as shown belows.
 
