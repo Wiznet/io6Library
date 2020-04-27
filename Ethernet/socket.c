@@ -2,9 +2,12 @@
 //! \file socket.c
 //! \brief SOCKET APIs Implements file.
 //! \details SOCKET APIs like as Berkeley Socket APIs. 
-//! \version 1.0.0
-//! \date 2019/01/01
+//! \version 1.0.1
+//! \date 2020/04/27
 //! \par  Revision history
+//!   <2020/04/27> V1.0.1 Modify default value of tcmd to Sn_CR_SEND to send data 
+//!                in macrawmode and the condition of the if()when setting
+//!	               the destination port number.
 //!   <2019/01/01> 1st Release
 //! \author MidnightCow
 //! \copyright
