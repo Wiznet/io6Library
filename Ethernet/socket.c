@@ -369,7 +369,7 @@ datasize_t recv(uint8_t sn, uint8_t * buf, datasize_t len)
 datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uint16_t port, uint8_t addrlen)
 {
    uint8_t tmp = 0;
-   uint8_t tcmd = 0;
+   uint8_t tcmd = Sn_CR_SEND;
    uint16_t freesize = 0;
    /* 
     * The below codes can be omitted for optmization of speed
@@ -397,7 +397,7 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
       }
       else return SOCKERR_IPINVALID;
    }
-   if(tmp & 0x02)     // Sn_MR_UPD4(0010), Sn_MR_UDP6(1010), Sn_MR_UDPD(1110)
+   if((tmp & 0x03)==0x02)     // Sn_MR_UPD4(0010), Sn_MR_UDP6(1010), Sn_MR_UDPD(1110)
    {
       if(port){ setSn_DPORTR(sn, port);}
       else   return SOCKERR_PORTZERO;
@@ -412,7 +412,7 @@ datasize_t sendto(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, uin
       if(getSn_SR(sn) == SOCK_CLOSED) return SOCKERR_SOCKCLOSED;
       if(len <= freesize) break;
       if( sock_io_mode & (1<<sn) ) return SOCK_BUSY;  
-   };
+   }
    wiz_send_data(sn, buf, len);
    setSn_CR(sn,tcmd);
    while(getSn_CR(sn));
