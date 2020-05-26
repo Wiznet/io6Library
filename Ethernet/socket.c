@@ -487,6 +487,7 @@ datasize_t recvfrom(uint8_t sn, uint8_t * buf, datasize_t len, uint8_t * addr, u
             while(getSn_CR(sn));
             break;
          case Sn_MR_MACRAW :
+			pack_len-=2;
             if(pack_len > 1514) 
             {
                close(sn);
