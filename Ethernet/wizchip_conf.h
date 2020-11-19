@@ -960,6 +960,84 @@ int8_t wizchip_unsolicited(void);
 int8_t wizchip_getprefix(wiz_Prefix * prefix);
 
 
+/* These are not prototyped anywhere else, so I'll stick them here */
+/**
+ * @brief Default function to enter the critical section for @ref _WIZCHIP_.
+ * @details @ref wizchip_cris_enter() provides the default protection while @ref _WIZCHIP_ is accessed. \n
+ *          but it is null function.
+ * @note It can be overwritten with your function or register your functions by calling @ref reg_wizchip_cris_cbfunc().
+ * @sa wizchip_cris_exit()
+ */
+void wizchip_cris_enter(void);
+
+/**
+ * @brief Default function to exit the critical section for @ref _WIZCHIP_.
+ * @details @ref wizchip_cris_exit provides the default protection while @ref _WIZCHIP_ is accessed\n
+ *          but it is null function.
+ * @note It can be overwritten with your function or register your functions by calling @ref reg_wizchip_cris_cbfunc().
+ * @sa wizchip_cris_enter()
+ */
+void wizchip_cris_exit(void);
+
+/**
+ * @brief Default function to select @ref _WIZCHIP_.
+ * @details @ref wizchip_cs_select() provides the default selection @ref _WIZCHIP_,\n
+ *          but it is null function.
+ * @note It can be overwritten with your function or register your functions by calling @ref reg_wizchip_cs_cbfunc().
+ * @sa wizchip_cs_deselect()
+ */
+void wizchip_cs_select(void);
+
+/**
+ * @brief Default function to de-select @ref _WIZCHIP_.
+ * @details @ref wizchip_cs_deselect() provides the default de-selection @ref _WIZCHIP_, \n
+ *          but it is null function.
+ * @note It can be overwritten with your function or register your functions by calling @ref reg_wizchip_cs_cbfunc().
+ * @sa wizchip_cs_select()
+ */
+void wizchip_cs_deselect(void);
+
+/**
+ * @brief Default function to read one byte by using SPI interface.
+ * @details @ref wizchip_spi_read() provides the default read one byte data from SPI of @ref _WIZCHIP_,\n
+ *          but it is null function.
+ * @return uint8_t 
+ * @todo It should be overwritten with your function or register your functions by calling @ref reg_wizchip_spi_cbfunc().
+ */
+uint8_t wizchip_spi_read(void);
+
+/**
+ * @brief Default function to write one byte by using SPI interface.
+ * @details @ref wizchip_spi_write() provides the default write one byte data to SPI of @ref _WIZCHIP_,\n
+ *          but it is null function.
+ * @param wb uint8_t data to be written
+ * @return void 
+ * @todo It should be overwritten with your function or register your functions by calling @ref reg_wizchip_spi_cbfunc().
+ */
+void wizchip_spi_write(uint8_t wb);
+
+/**
+ * @brief Default function to read buffer by using SPI interface.
+ * @details @ref wizchip_spi_read_buf() provides the default read byte buffer as many as <i>len</i> from SPI of @ref _WIZCHIP_.
+ * @param buf It specifies your buffer pointer to be saved the read data from @ref _WIZCHIP_.
+ * @param len It specifies the data length to be read from @ref _WIZCHIP_.
+ * @return void
+ * @note It is use @ref wizchip_spi_read() as default. \n
+ *       It can be overwritten with your function or register your functions by calling @ref reg_wizchip_spi_cbfunc().
+ */
+void wizchip_spi_read_buf(uint8_t* buf, datasize_t len);
+
+/**
+ * @brief Default function to write buffer by using SPI interface.
+ * @details @ref wizchip_spi_write_buf() provides the default write byte buffer as many as <i>len</i> to SPI of @ref _WIZCHIP_.
+ * @param buf It specifies your buffer pointer to be written to @ref _WIZCHIP_.
+ * @param len It specifies the data length to be write from @ref _WIZCHIP_.
+ * @return void
+ * @note It is use @ref wizchip_spi_write() as default. \n
+ *       It can be overwritten with your function or register your functions by calling @ref reg_wizchip_spi_cbfunc().
+ */
+void wizchip_spi_write_buf(uint8_t* buf, datasize_t len);
+
 #ifdef __cplusplus
 }
 #endif

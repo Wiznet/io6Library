@@ -1455,7 +1455,7 @@ extern "C" {
  * @sa _SYSR_, _WIZCHIP_IO_MODE_BUS_
  * @sa getSYSR()
  */
-#define SYSR_IND             (1 << 5)
+#define SYSR_IND             (1 << 1)
 
 /**
  * @brief SPI I/F Mode bit of @ref _SYSR_.
