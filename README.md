@@ -20,7 +20,7 @@ io6Library is implemented to manage the code dependent on the user's specific MC
 
 io6Library can be classified into three types as follows.
 
- - Reigsters Defintion
+ - Registers Defintion
    - Common Registers
      : Defines general registers such as network information, mode, interrupt, and so on.
    - Socket Registers
